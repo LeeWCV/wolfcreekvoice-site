@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Summit Signal | AI Voice Agents for Southwest Colorado Small Businesses</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Summit Signal builds natural-sounding AI voice agents that answer every call, book appointments, and capture leads for small businesses in Pagosa Springs and Southwest Colorado." />
+  <meta name="keywords" content="AI voice agent, virtual receptionist, Pagosa Springs, Southwest Colorado, small business AI, call answering, appointment booking" />
+  <meta property="og:title" content="Summit Signal | AI Voice Agents for Small Business" />
+  <meta property="og:description" content="Never miss another call. Natural-sounding AI voice agents that answer 24/7 for small businesses in Southwest Colorado." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="Summit_Signal_logo.png" />
+  <link rel="icon" type="image/png" href="Summit_Signal_logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #03080d;
+      --bg-card: rgba(8, 18, 30, 0.85);
+      --bg-card-hover: rgba(12, 26, 42, 0.9);
+      --accent: #2dd4a8;
+      --accent-glow: rgba(45, 212, 168, 0.35);
+      --accent-soft: rgba(45, 212, 168, 0.08);
+      --blue: #38bdf8;
+      --blue-glow: rgba(56, 189, 248, 0.2);
+      --purple: #a78bfa;
+      --text: #edf2f7;
+      --text-dim: #94a3b8;
+      --text-muted: #64748b;
+      --border: rgba(148, 163, 184, 0.12);
+      --border-hover: rgba(148, 163, 184, 0.25);
+      --radius: 1rem;
+      --radius-lg: 1.5rem;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* --- Ambient background --- */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 0%, rgba(45, 212, 168, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 10%, rgba(56, 189, 248, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 40% at 50% 90%, rgba(167, 139, 250, 0.04) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .page { min-height: 100vh; display: flex; flex-direction: column; position: relative; z-index: 1; }
+
+    .container { width: 100%; max-width: 1180px; margin: 0 auto; padding: 0 1.75rem; }
+
+    /* --- Animations --- */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 12px rgba(34, 197, 94, 0.6), 0 0 0 0 rgba(34, 197, 94, 0.4); }
+      50% { box-shadow: 0 0 18px rgba(34, 197, 94, 0.8), 0 0 24px 4px rgba(34, 197, 94, 0.2); }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    @keyframes orb-breathe {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 4px rgba(45, 212, 168, 0.15), 0 0 40px rgba(45, 212, 168, 0.3); }
+      50% { transform: scale(1.06); box-shadow: 0 0 0 6px rgba(45, 212, 168, 0.2), 0 0 60px rgba(45, 212, 168, 0.45); }
+    }
+    @keyframes count-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .animate-on-scroll { opacity: 0; transform: translateY(28px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
+    .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+
+    /* --- Header --- */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px) saturate(1.6);
+      -webkit-backdrop-filter: blur(16px) saturate(1.6);
+      background: rgba(3, 8, 13, 0.8);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s ease;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7rem 0;
+      gap: 1rem;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.05);
+      flex-shrink: 0;
+      transition: transform 0.3s var(--ease-spring);
+    }
+    .brand-logo:hover { transform: scale(1.08); }
+    .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
+
+    .brand-text { display: flex; flex-direction: column; gap: 0; }
+    .brand-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+    .brand-tagline {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .nav-links a {
+      padding: 0.4rem 0.75rem;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+      font-weight: 500;
+    }
+    .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
+
+    /* Mobile menu button */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.4rem;
+      cursor: pointer;
+      color: var(--text);
+    }
+    .menu-toggle svg { display: block; }
+
+    /* --- Buttons --- */
+    .btn {
+      border-radius: 999px;
+      padding: 0.6rem 1.3rem;
+      font-size: 0.86rem;
+      font-weight: 600;
+      font-family: var(--font-body);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      transition: all 0.25s var(--ease-out);
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #22c55e 0%, #2dd4a8 50%, #38bdf8 100%);
+      background-size: 200% 100%;
+      color: #020617;
+      font-weight: 700;
+      box-shadow: 0 8px 30px rgba(34, 197, 94, 0.3), 0 2px 8px rgba(34, 197, 94, 0.2);
+    }
+    .btn-primary:hover {
+      background-position: 100% 0;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(34, 197, 94, 0.4), 0 4px 12px rgba(34, 197, 94, 0.3);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+    .btn-outline:hover {
+      border-color: var(--accent);
+      background: rgba(45, 212, 168, 0.06);
+      color: var(--accent);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-dim);
+      padding: 0.5rem 0.9rem;
+      font-weight: 500;
+    }
+    .btn-ghost:hover { color: var(--text); }
+    .btn-arrow { transition: transform 0.2s var(--ease-out); display: inline-block; }
+    .btn:hover .btn-arrow { transform: translateX(3px) translateY(-2px); }
+
+    /* --- Hero --- */
+    .hero {
+      padding: 4.5rem 0 3.5rem;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    .hero-content { animation: fadeUp 0.8s var(--ease-out) both; }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.3rem 0.75rem 0.3rem 0.35rem;
+      border-radius: 999px;
+      border: 1px solid rgba(45, 212, 168, 0.25);
+      background: linear-gradient(135deg, rgba(45, 212, 168, 0.1), rgba(56, 189, 248, 0.06));
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+    .kicker-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      animation: pulse-glow 2.5s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 4vw + 0.5rem, 3.8rem);
+      line-height: 1.06;
+      letter-spacing: -0.035em;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+    }
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, #2dd4a8 0%, #38bdf8 40%, #a78bfa 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+      max-width: 36rem;
+      margin-bottom: 2rem;
+    }
+    .hero-subtitle strong { color: var(--text); font-weight: 600; }
+
+    .hero-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .hero-feature {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      font-weight: 500;
+    }
+    .feature-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(45, 212, 168, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.65rem;
+      color: var(--accent);
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-proof {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .hero-proof strong { color: var(--text-dim); font-weight: 600; }
+
+    /* --- Demo Panel --- */
+    .hero-panel {
+      animation: fadeUp 0.8s var(--ease-out) 0.15s both;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-hover);
+      background:
+        radial-gradient(ellipse 80% 50% at 10% 0%, rgba(56, 189, 248, 0.12), transparent 50%),
+        radial-gradient(ellipse 60% 60% at 90% 100%, rgba(45, 212, 168, 0.1), transparent 50%),
+        var(--bg-card);
+      padding: 1.5rem;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03) inset;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 20%;
+      right: 20%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.5;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+    }
+    .panel-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+      font-weight: 600;
+    }
+    .panel-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .panel-badge {
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(45, 212, 168, 0.3);
+      font-size: 0.68rem;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .demo-shell {
+      border-radius: var(--radius);
+      background: rgba(3, 8, 13, 0.7);
+      border: 1px solid var(--border-hover);
+      padding: 1rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .demo-orb {
+      width: 56px;
+      height: 56px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 35% 35%, #4ade80, #22c55e 30%, #0f766e 60%, #020617 100%);
+      animation: orb-breathe 3s ease-in-out infinite;
+      position: relative;
+      cursor: pointer;
+    }
+    .demo-orb::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255,255,255,0.3), transparent 70%);
+    }
+
+    .demo-headline {
+      font-size: 0.92rem;
+      font-weight: 500;
+      margin-bottom: 0.35rem;
+      line-height: 1.45;
+    }
+    .demo-subtext {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 0.6rem;
+    }
+
+    .pill-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.6rem; }
+    .pill-mini {
+      font-size: 0.68rem;
+      padding: 0.18rem 0.55rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .demo-status {
+      font-size: 0.76rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 500;
+    }
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    .widget-embed {
+      margin-top: 1rem;
+      border-radius: 0.75rem;
+      border: 1px dashed rgba(148, 163, 184, 0.25);
+      padding: 0.85rem;
+      background: rgba(3, 8, 13, 0.6);
+    }
+    .widget-embed p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin: 0;
+    }
+    .widget-embed code {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      background: rgba(45, 212, 168, 0.08);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      border: 1px solid rgba(45, 212, 168, 0.15);
+      color: var(--accent);
+    }
+
+    /* --- Social Proof / Stats --- */
+    .stats-bar {
+      padding: 2.5rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      text-align: center;
+    }
+    .stat { animation: count-up 0.6s var(--ease-out) both; }
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+    .stat-number .accent { color: var(--accent); }
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* --- Section common --- */
+    section { padding: 4rem 0; position: relative; }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      line-height: 1.15;
+    }
+    .section-desc {
+      font-size: 1rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+      max-width: 32rem;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    /* --- Capabilities cards --- */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    .cap-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      padding: 1.5rem;
+      transition: all 0.35s var(--ease-out);
+      position: relative;
+      overflow: hidden;
+    }
+    .cap-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 0% 0%, var(--accent-soft), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .cap-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+    }
+    .cap-card:hover::before { opacity: 1; }
+    .cap-card.featured {
+      border-color: rgba(45, 212, 168, 0.4);
+      box-shadow: 0 16px 60px rgba(45, 212, 168, 0.12);
+    }
+    .cap-card.featured::before { opacity: 1; }
+
+    .cap-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(45, 212, 168, 0.15), rgba(56, 189, 248, 0.1));
+      border: 1px solid rgba(45, 212, 168, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cap-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.65rem;
+      position: relative;
+      z-index: 1;
+    }
+    .cap-card p {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.65;
+      margin-bottom: 0.85rem;
+      position: relative;
+      z-index: 1;
+    }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; position: relative; z-index: 1; }
+    .tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .tag-accent { border-color: rgba(45, 212, 168, 0.4); color: var(--accent); }
+
+    /* --- How It Works --- */
+    .how-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .steps { display: flex; flex-direction: column; gap: 0; }
+
+    .step {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 1rem;
+      align-items: start;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; }
+
+    .step-marker {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(45, 212, 168, 0.12), rgba(56, 189, 248, 0.08));
+      border: 1px solid rgba(45, 212, 168, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--accent);
+    }
+
+    .step h4 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+    .step p {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    .use-case-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      padding: 1.5rem;
+    }
+    .use-case-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    .use-case-card > p {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.65;
+      margin-bottom: 1rem;
+    }
+
+    .use-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    .use-table th {
+      text-align: left;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 0.5rem 0.6rem;
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+    }
+    .use-table td {
+      padding: 0.6rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+    .use-table td:first-child { color: var(--text); font-weight: 500; }
+    .use-table tbody tr { transition: background 0.2s; }
+    .use-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+    /* --- Local section --- */
+    .local-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+    .local-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .local-card.primary {
+      background:
+        radial-gradient(ellipse 70% 50% at 0% 0%, rgba(56, 189, 248, 0.1), transparent 50%),
+        var(--bg-card);
+    }
+    .local-card.secondary { background: var(--bg-card); }
+
+    .local-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.7rem;
+    }
+    .local-card p {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.65;
+      margin-bottom: 0.6rem;
+    }
+    .local-card strong { color: var(--text); }
+
+    .giveback-badge {
+      margin-top: 0.8rem;
+      padding: 0.7rem 0.9rem;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(22, 101, 52, 0.5), rgba(22, 101, 52, 0.3));
+      border: 1px solid rgba(74, 222, 128, 0.4);
+      color: #bbf7d0;
+      font-size: 0.84rem;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+    .giveback-badge strong { color: #4ade80; }
+
+    .geo-note {
+      font-size: 0.84rem;
+      color: var(--blue);
+      font-style: italic;
+    }
+
+    /* --- CTA section --- */
+    .cta-section { padding: 4rem 0 4.5rem; }
+    .cta-box {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(45, 212, 168, 0.25);
+      background:
+        radial-gradient(ellipse 60% 50% at 0% 50%, rgba(45, 212, 168, 0.1), transparent 50%),
+        radial-gradient(ellipse 50% 60% at 100% 50%, rgba(56, 189, 248, 0.08), transparent 50%),
+        var(--bg-card);
+      padding: 2.5rem;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 2rem;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.4);
+    }
+    .cta-box::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.4;
+    }
+
+    .cta-box h2 {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.6rem;
+    }
+    .cta-box > div > p {
+      font-size: 0.95rem;
+      color: var(--text-dim);
+      line-height: 1.65;
+      max-width: 30rem;
+      margin-bottom: 1.25rem;
+    }
+    .cta-side {
+      text-align: right;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .cta-side strong { color: var(--text-dim); }
+
+    /* --- Footer --- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 0 2rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .footer-links a { transition: color 0.2s; font-weight: 500; }
+    .footer-links a:hover { color: var(--text); }
+
+    /* --- Responsive --- */
+    @media (max-width: 1024px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero { padding: 3rem 0 2.5rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .menu-toggle { display: flex; }
+      .grid-3 { grid-template-columns: 1fr 1fr; }
+      .how-grid { grid-template-columns: 1fr; }
+      .local-grid { grid-template-columns: 1fr; }
+      .cta-box { grid-template-columns: 1fr; }
+      .cta-side { text-align: left; }
+    }
+
+    @media (max-width: 640px) {
+      .grid-3 { grid-template-columns: 1fr; }
+      .hero-features { grid-template-columns: 1fr; }
+      .hero-ctas { flex-direction: column; align-items: stretch; }
+      .hero-ctas .btn { justify-content: center; }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+      .cta-box { padding: 1.5rem; }
+      .cta-box h2 { font-size: 1.4rem; }
+      .section-header { flex-direction: column; align-items: flex-start; }
+      .nav-right .pill-tag { display: none; }
+    }
+
+    /* Mobile menu overlay */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(3, 8, 13, 0.95);
+      backdrop-filter: blur(20px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--text); }
+    .mobile-menu-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+
+    /* Pill in nav */
+    .pill-tag {
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.7rem;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- ===== HEADER ===== -->
+    <header>
+      <div class="container nav">
+        <a href="#top" class="nav-left">
+          <div class="brand-logo">
+            <img src="Summit_Signal_logo.png" alt="Summit Signal logo" />
+          </div>
+          <div class="brand-text">
+            <span class="brand-name">Summit Signal</span>
+            <span class="brand-tagline">Intelligent Technology</span>
+          </div>
+        </a>
+
+        <nav class="nav-links">
+          <a href="#features">Capabilities</a>
+          <a href="#how">How It Works</a>
+          <a href="#local">Our Community</a>
+          <a href="#demo">Live Demo</a>
+        </nav>
+
+        <div class="nav-right">
+          <span class="pill-tag">AI Voice Agents</span>
+          <a href="#contact" class="btn btn-primary" style="padding: 0.5rem 1.1rem; font-size: 0.82rem;">
+            Book a Call <span class="btn-arrow">↗</span>
+          </a>
+          <button class="menu-toggle" onclick="document.querySelector('.mobile-menu').classList.add('open')" aria-label="Open menu">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h14M4 12h14M4 17h14"/></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu">
+      <button class="mobile-menu-close" onclick="this.parentElement.classList.remove('open')" aria-label="Close menu">&times;</button>
+      <a href="#features" onclick="this.parentElement.classList.remove('open')">Capabilities</a>
+      <a href="#how" onclick="this.parentElement.classList.remove('open')">How It Works</a>
+      <a href="#local" onclick="this.parentElement.classList.remove('open')">Our Community</a>
+      <a href="#demo" onclick="this.parentElement.classList.remove('open')">Live Demo</a>
+      <a href="#contact" onclick="this.parentElement.classList.remove('open')" class="btn btn-primary" style="margin-top:1rem;">Book a Call</a>
+    </div>
+
+    <main>
+      <!-- ===== HERO ===== -->
+      <section class="hero" id="top">
+        <div class="container hero-grid">
+          <div class="hero-content">
+            <div class="hero-kicker">
+              <span class="kicker-dot"></span>
+              Never miss another call in Pagosa Springs &amp; Southwest Colorado
+            </div>
+
+            <h1 class="hero-title">
+              Natural-sounding<br />
+              <span class="gradient-text">AI Voice Agents</span><br />
+              that answer every call.
+            </h1>
+
+            <p class="hero-subtitle">
+              Summit Signal builds <strong>real-time AI voice agents</strong> that pick up instantly,
+              hold natural conversations, book appointments, and capture leads — so your team can
+              focus on the work that matters.
+            </p>
+
+            <div class="hero-features">
+              <div class="hero-feature">
+                <span class="feature-icon">✓</span>
+                24/7 always-on call answering
+              </div>
+              <div class="hero-feature">
+                <span class="feature-icon">✓</span>
+                Human-like voice &amp; low latency
+              </div>
+              <div class="hero-feature">
+                <span class="feature-icon">✓</span>
+                Lead capture &amp; appointment booking
+              </div>
+              <div class="hero-feature">
+                <span class="feature-icon">✓</span>
+                Integrates with your CRM &amp; calendar
+              </div>
+            </div>
+
+            <div class="hero-ctas">
+              <a href="#demo" class="btn btn-primary">
+                Try the Live Voice Demo <span class="btn-arrow">↗</span>
+              </a>
+              <a href="#contact" class="btn btn-outline">
+                Book a Strategy Call
+              </a>
+            </div>
+
+            <div class="hero-proof">
+              <strong>Agentic AI</strong> for phones &amp; web — natural language, real-time analytics,
+              and consistent on-brand experiences built for local businesses.
+            </div>
+          </div>
+
+          <!-- Demo panel -->
+          <aside class="hero-panel" id="demo">
+            <div class="panel-header">
+              <div>
+                <div class="panel-label">Live Demo</div>
+                <div class="panel-title">Talk to the Summit Signal AI</div>
+              </div>
+              <div class="panel-badge">Voice AI</div>
+            </div>
+
+            <div class="demo-shell">
+              <div class="demo-orb" title="Click to start a conversation"></div>
+              <div>
+                <div class="demo-headline">
+                  "Hi, I'm your AI receptionist. How can Summit Signal help today?"
+                </div>
+                <div class="demo-subtext">
+                  Try booking an appointment, asking about pricing, or exploring what
+                  our AI can automate for your business.
+                </div>
+                <div class="pill-row">
+                  <span class="pill-mini">24/7 Always-On</span>
+                  <span class="pill-mini">Natural Voice</span>
+                  <span class="pill-mini">Real-Time Routing</span>
+                  <span class="pill-mini">Lead Capture</span>
+                </div>
+                <div class="demo-status">
+                  <span class="pulse-dot"></span>
+                  Click the widget below to start a live conversation
+                </div>
+              </div>
+            </div>
+
+            <div class="widget-embed">
+              <!-- ====================================== -->
+              <!-- REPLACE THIS with your ElevenLabs widget -->
+              <!-- Example:
+              <script
+                src="https://elevenlabs.io/voice-widget.js"
+                data-agent-id="YOUR_AGENT_ID"
+                async
+              ></script>
+              -->
+              <!-- ====================================== -->
+              <p>
+                Add your ElevenLabs <code>&lt;script&gt;</code> or <code>&lt;iframe&gt;</code> snippet
+                here to embed your AI voice agent. Visitors can speak directly with your agent in the browser.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ===== STATS BAR ===== -->
+      <div class="stats-bar">
+        <div class="container">
+          <div class="stats-grid">
+            <div class="stat animate-on-scroll">
+              <div class="stat-number">24<span class="accent">/7</span></div>
+              <div class="stat-label">Always-on answering</div>
+            </div>
+            <div class="stat animate-on-scroll">
+              <div class="stat-number">&lt;1<span class="accent">s</span></div>
+              <div class="stat-label">Average response time</div>
+            </div>
+            <div class="stat animate-on-scroll">
+              <div class="stat-number">98<span class="accent">%</span></div>
+              <div class="stat-label">Call resolution rate</div>
+            </div>
+            <div class="stat animate-on-scroll">
+              <div class="stat-number">10<span class="accent">%</span></div>
+              <div class="stat-label">Profits back to community</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== CAPABILITIES ===== -->
+      <section id="features">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <div class="section-label">// Capabilities</div>
+              <div class="section-title">AI voice agents built for real businesses</div>
+            </div>
+            <p class="section-desc">
+              Summit Signal combines <strong>conversational AI</strong> with local context so
+              your callers get instant, human-like support — not voicemail, phone trees, or hold music.
+            </p>
+          </div>
+
+          <div class="grid-3">
+            <div class="cap-card featured animate-on-scroll">
+              <div class="cap-icon">📞</div>
+              <h3>AI Receptionist for Your Phones</h3>
+              <p>
+                A branded AI call agent that answers every call, routes to the right person,
+                handles FAQs, and books appointments — no call center or IVR required.
+              </p>
+              <div class="tag-row">
+                <span class="tag tag-accent">AI Call Agent</span>
+                <span class="tag tag-accent">Virtual Receptionist</span>
+                <span class="tag tag-accent">Voicebot</span>
+              </div>
+            </div>
+
+            <div class="cap-card animate-on-scroll">
+              <div class="cap-icon">🎙️</div>
+              <h3>Natural Voice, Low Latency</h3>
+              <p>
+                Powered by modern voice AI, your agent responds in real time with human-like tone,
+                natural language understanding, and deep knowledge of your business.
+              </p>
+              <div class="tag-row">
+                <span class="tag">NLU</span>
+                <span class="tag">Real-Time Voice AI</span>
+                <span class="tag">Low Latency</span>
+              </div>
+            </div>
+
+            <div class="cap-card animate-on-scroll">
+              <div class="cap-icon">📊</div>
+              <h3>Integrations &amp; Analytics</h3>
+              <p>
+                Connect your agent to calendars, CRMs, and ticketing tools, then track every
+                conversation with real-time analytics and performance insights.
+              </p>
+              <div class="tag-row">
+                <span class="tag">CRM Integration</span>
+                <span class="tag">Analytics</span>
+                <span class="tag">Agentic Workflows</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="divider" />
+
+      <!-- ===== HOW IT WORKS ===== -->
+      <section id="how">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <div class="section-label">// Process</div>
+              <div class="section-title">From first call to always-on AI in days</div>
+            </div>
+            <p class="section-desc">
+              We handle the technical side — you pick up the results. A structured process,
+              transparent pricing, and a live AI agent tailored to your workflows.
+            </p>
+          </div>
+
+          <div class="how-grid">
+            <div class="steps animate-on-scroll">
+              <div class="step">
+                <div class="step-marker">01</div>
+                <div>
+                  <h4>Discover &amp; Design</h4>
+                  <p>We map your call flows, FAQs, and scheduling rules, then design an AI voice
+                  agent that mirrors your best receptionist — faster and always available.</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-marker">02</div>
+                <div>
+                  <h4>Configure &amp; Connect</h4>
+                  <p>We set up intents, scripts, and integrations with your tools (calendars, CRM,
+                  ticketing), then run live tests so the agent handles Tier 1 support from day one.</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-marker">03</div>
+                <div>
+                  <h4>Deploy &amp; Optimize</h4>
+                  <p>Once live, we monitor analytics, transcripts, and conversion metrics —
+                  continuously training your agent to qualify leads and reduce call handling time.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="use-case-card animate-on-scroll">
+              <h3>Who Summit Signal Is Built For</h3>
+              <p>
+                We focus on <strong>small businesses in Southwest Colorado</strong> — Pagosa Springs
+                and surrounding areas — who want an AI-powered front door for their customers.
+              </p>
+              <table class="use-table">
+                <thead>
+                  <tr><th>Use Case</th><th>What the AI Agent Does</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Service Businesses</td>
+                    <td>Answers phones, books jobs, sends confirmations, handles rescheduling.</td>
+                  </tr>
+                  <tr>
+                    <td>Medical &amp; Wellness</td>
+                    <td>Captures patient info, routes urgent calls, manages appointment overflow.</td>
+                  </tr>
+                  <tr>
+                    <td>Hospitality &amp; Tourism</td>
+                    <td>Fields questions, takes bookings, supports after-hours callers.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="tag-row" style="margin-top:1rem;">
+                <span class="tag">Southwest Colorado</span>
+                <span class="tag">Pagosa Springs</span>
+                <span class="tag">Small Business AI</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="divider" />
+
+      <!-- ===== LOCAL FIRST ===== -->
+      <section id="local">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <div class="section-label">// Local First</div>
+              <div class="section-title">Rooted in Pagosa Springs</div>
+            </div>
+            <p class="section-desc">
+              Summit Signal is an independent studio based in Pagosa Springs — combining
+              deep tech experience with a commitment to the people and businesses of Southwest Colorado.
+            </p>
+          </div>
+
+          <div class="local-grid">
+            <div class="local-card primary animate-on-scroll">
+              <h3>AI Solutions for Southwest Colorado</h3>
+              <p>
+                We partner with local organizations across Pagosa Springs, Durango, Bayfield,
+                Ignacio, and surrounding communities to bring <strong>practical AI solutions</strong>
+                to real businesses — not just big city call centers.
+              </p>
+              <p class="geo-note">
+                From mountain-town tourism to trades, clinics, and main-street shops — our voice
+                agents are tuned to your customers, your hours, and your way of doing business.
+              </p>
+              <div class="giveback-badge">
+                Summit Signal pledges <strong>10% of profits</strong> back to the local community —
+                supporting education, environment, and small business initiatives in Southwest Colorado.
+              </div>
+            </div>
+
+            <div class="local-card secondary animate-on-scroll">
+              <h3>Beyond Voice: Future Intelligent Technology</h3>
+              <p>
+                As your needs grow, we help with broader <strong>AI solutions</strong> — from
+                intelligent chatbots and workflow automation to custom AI tools that streamline
+                your operations.
+              </p>
+              <p>
+                Think of Summit Signal as your long-term partner for <strong>agentic AI</strong>,
+                automation, and modern digital infrastructure — starting with phones and
+                expanding across your business.
+              </p>
+              <div class="tag-row" style="margin-top:0.5rem;">
+                <span class="tag">AI Automation</span>
+                <span class="tag">Intelligent Workflows</span>
+                <span class="tag">Custom AI Solutions</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== CTA ===== -->
+      <section class="cta-section" id="contact">
+        <div class="container">
+          <div class="cta-box animate-on-scroll">
+            <div>
+              <h2>Ready to give your business an intelligent front desk?</h2>
+              <p>
+                Book a quick call and we'll map out where an AI voice agent can take over
+                repetitive calls, capture more leads, and improve customer experience —
+                often in just a few days.
+              </p>
+              <div class="hero-ctas">
+                <a href="mailto:hello@summitsignal.com" class="btn btn-primary">
+                  Email Summit Signal <span class="btn-arrow">↗</span>
+                </a>
+                <a href="https://cal.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+                  Schedule a Zoom Consult
+                </a>
+              </div>
+            </div>
+            <div class="cta-side">
+              <div><strong>10% of profits</strong> reinvested locally in Southwest Colorado.</div>
+              <div style="margin-top:0.5rem;">
+                24/7 always-on AI &bull; Natural-sounding conversations &bull; Real-time analytics
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+      <div class="container footer-row">
+        <div>&copy; <span id="year"></span> Summit Signal &bull; Intelligent Technology &bull; Pagosa Springs, CO</div>
+        <div class="footer-links">
+          <a href="#top">Back to Top</a>
+          <a href="#demo">Live Demo</a>
+          <a href="#local">Community</a>
+          <a href="mailto:hello@summitsignal.com">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Scroll-triggered animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          // Stagger siblings
+          const siblings = entry.target.parentElement.querySelectorAll('.animate-on-scroll');
+          const idx = Array.from(siblings).indexOf(entry.target);
+          entry.target.style.transitionDelay = `${idx * 0.1}s`;
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Header shadow on scroll
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        header.style.background = 'rgba(3, 8, 13, 0.92)';
+        header.style.boxShadow = '0 4px 30px rgba(0,0,0,0.3)';
+      } else {
+        header.style.background = 'rgba(3, 8, 13, 0.8)';
+        header.style.boxShadow = 'none';
+      }
+    }, { passive: true });
+  </script>
+</body>
+</html>
