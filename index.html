@@ -9,16 +9,45 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg:#03080d; --bg-card:rgba(8,18,30,0.9);
-      --accent:#2dd4a8; --accent-soft:rgba(45,212,168,0.08);
-      --blue:#38bdf8; --text:#edf2f7; --text-dim:#94a3b8; --text-muted:#64748b;
-      --border:rgba(148,163,184,0.12); --border-hi:rgba(148,163,184,0.25);
-      --r:1rem; --rl:1.5rem;
-      --fd:'Barlow Condensed',sans-serif; --fb:'DM Sans',sans-serif;
-      --ease:cubic-bezier(0.22,1,0.36,1);
+
+  <!-- ═══════════════════════════════════════════════════════
+       RETELL AI WIDGET
+       1. Replace YOUR_RETELL_PUBLIC_KEY below with your key.
+          Get it: Retell Dashboard → Keys → + Add Key → Public Key
+          Add your domain (e.g. wolfcreekvoice.com) when creating it.
+       2. data-agent-id is already set to your agent.
+       3. The widget button is hidden — we trigger it from our
+          custom call button inside the demo panel.
+  ════════════════════════════════════════════════════════════ -->
+  <script
+    id="retell-widget"
+    src="https://dashboard.retellai.com/retell-widget.js"
+    type="module"
+    data-public-key="public_key_d5a65cea4699f1105d5df"
+    data-agent-id="agent_2d9f715e5c855773568dd56a86"
+    data-agent-version="0"
+    data-title="Wolf Creek Voice"
+    data-color="#2dd4a8"
+    data-bot-name="Wolf Creek Voice"
+    data-popup-message="Hi! I'm your Wolf Creek Voice assistant. Click to start a live voice call."
+    data-show-ai-popup="true"
+    data-show-ai-popup-time="4"
+    data-auto-open="false">
+  </script>
+
+  <!-- Hide Retell's default floating button — we use our own inline trigger -->
+  <style id="retell-hide">
+    #retell-widget-container,
+    [id*="retell-widget"],
+    [class*="retell-widget-button"],
+    [class*="retell-bubble"] {
+      display: none !important;
+      visibility: hidden !important;
     }
+  </style>
+
+  <style>
+    :root{--bg:#03080d;--bg-card:rgba(8,18,30,0.9);--accent:#2dd4a8;--accent-soft:rgba(45,212,168,0.08);--blue:#38bdf8;--text:#edf2f7;--text-dim:#94a3b8;--text-muted:#64748b;--border:rgba(148,163,184,0.12);--border-hi:rgba(148,163,184,0.25);--r:1rem;--rl:1.5rem;--fd:'Barlow Condensed',sans-serif;--fb:'DM Sans',sans-serif;--ease:cubic-bezier(0.22,1,0.36,1)}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
     body{font-family:var(--fb);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -27,15 +56,12 @@
     img{max-width:100%;display:block}
     .wrap{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
     .container{width:100%;max-width:1180px;margin:0 auto;padding:0 1.75rem}
-
     @keyframes pulse-glow{0%,100%{box-shadow:0 0 10px rgba(34,197,94,0.5)}50%{box-shadow:0 0 20px rgba(34,197,94,0.8),0 0 30px rgba(34,197,94,0.3)}}
     @keyframes orb-breathe{0%,100%{transform:scale(1);box-shadow:0 0 0 4px rgba(45,212,168,0.15),0 0 40px rgba(45,212,168,0.3)}50%{transform:scale(1.05);box-shadow:0 0 0 6px rgba(45,212,168,0.2),0 0 60px rgba(45,212,168,0.45)}}
     @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-
+    @keyframes ripple{0%{transform:scale(1);opacity:0.6}100%{transform:scale(2.2);opacity:0}}
     .anim{opacity:0;transform:translateY(22px);transition:opacity 0.6s var(--ease),transform 0.6s var(--ease)}
     .anim.vis{opacity:1;transform:translateY(0)}
-
-    /* HEADER */
     header{position:sticky;top:0;z-index:50;backdrop-filter:blur(16px);background:rgba(3,8,13,0.82);border-bottom:1px solid var(--border);transition:background 0.3s}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:0.65rem 0;gap:1rem}
     .nav-brand{display:flex;align-items:center;gap:0.75rem}
@@ -49,8 +75,6 @@
     .nav-links a:hover{color:var(--text);background:rgba(255,255,255,0.05)}
     .nav-right{display:flex;align-items:center;gap:0.6rem}
     .menu-toggle{display:none;background:none;border:1px solid var(--border);border-radius:8px;padding:0.38rem;cursor:pointer;color:var(--text)}
-
-    /* BUTTONS */
     .btn{border-radius:999px;padding:0.58rem 1.25rem;font-size:0.86rem;font-weight:600;font-family:var(--fb);border:none;cursor:pointer;display:inline-flex;align-items:center;gap:0.45rem;white-space:nowrap;transition:all 0.22s var(--ease);text-decoration:none}
     .btn-primary{background:linear-gradient(135deg,#22c55e 0%,#2dd4a8 50%,#38bdf8 100%);background-size:200% 100%;color:#020617;font-weight:700;box-shadow:0 6px 24px rgba(34,197,94,0.3)}
     .btn-primary:hover{background-position:100% 0;transform:translateY(-2px);box-shadow:0 10px 32px rgba(34,197,94,0.4)}
@@ -58,31 +82,22 @@
     .btn-outline:hover{border-color:var(--accent);background:rgba(45,212,168,0.06);color:var(--accent)}
     .ba{transition:transform 0.2s;display:inline-block}
     .btn:hover .ba{transform:translateX(3px) translateY(-2px)}
-
-    /* HERO */
     .hero{padding:3.5rem 0 2.5rem}
     .hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:3rem;align-items:start}
     .hero-left{animation:fadeUp 0.7s var(--ease) both}
-
     .kicker{display:inline-flex;align-items:center;gap:0.45rem;padding:0.28rem 0.8rem 0.28rem 0.35rem;border-radius:999px;border:1px solid rgba(45,212,168,0.25);background:rgba(45,212,168,0.07);font-size:0.78rem;color:var(--text-dim);margin-bottom:1.25rem;font-weight:500}
     .kicker-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse-glow 2.5s ease-in-out infinite;flex-shrink:0}
-
     .hero-title{font-family:var(--fd);font-size:clamp(2.8rem,4.5vw,4.2rem);font-weight:800;letter-spacing:0.03em;text-transform:uppercase;line-height:1.0;margin-bottom:1rem}
     .gt{background:linear-gradient(135deg,#2dd4a8 0%,#38bdf8 50%,#a78bfa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-
     .hero-desc{font-size:0.98rem;color:var(--text-dim);line-height:1.7;margin-bottom:1.5rem;max-width:33rem}
     .hero-desc strong{color:var(--text)}
-
     .who-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;margin-bottom:1.75rem}
     .who-card{border-radius:0.75rem;border:1px solid var(--border);background:var(--bg-card);padding:0.8rem 0.95rem}
     .who-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);font-weight:600;margin-bottom:0.18rem}
     .who-card p{font-size:0.8rem;color:var(--text-dim);line-height:1.5;margin:0}
-
     .hero-ctas{display:flex;flex-wrap:wrap;gap:0.65rem;margin-bottom:1.1rem}
     .proof{font-size:0.78rem;color:var(--text-muted);display:flex;align-items:center;gap:0.45rem}
     .proof-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse-glow 2.5s ease-in-out infinite}
-
-    /* DEMO PANEL */
     .hero-right{animation:fadeUp 0.7s var(--ease) 0.12s both}
     .demo-panel{border-radius:var(--rl);border:1px solid var(--border-hi);background:radial-gradient(ellipse 80% 50% at 10% 0%,rgba(56,189,248,0.1),transparent 50%),radial-gradient(ellipse 60% 60% at 90% 100%,rgba(45,212,168,0.08),transparent 50%),var(--bg-card);padding:1.4rem;box-shadow:0 20px 70px rgba(0,0,0,0.5),inset 0 0 0 1px rgba(255,255,255,0.03);position:relative;overflow:hidden}
     .demo-panel::before{content:"";position:absolute;top:-1px;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0.5}
@@ -90,35 +105,39 @@
     .panel-title{font-family:var(--fd);font-size:1.05rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em}
     .panel-badge{padding:0.18rem 0.55rem;border-radius:999px;border:1px solid rgba(45,212,168,0.3);font-size:0.66rem;color:var(--accent);letter-spacing:0.06em;font-weight:500;display:flex;align-items:center;gap:0.3rem}
     .live-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse-glow 2s ease-in-out infinite}
-
     .demo-orb-row{display:flex;align-items:center;gap:1rem;margin-bottom:0.9rem}
     .demo-orb{width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#4ade80,#22c55e 30%,#0f766e 60%,#020617 100%);animation:orb-breathe 3s ease-in-out infinite;cursor:pointer;flex-shrink:0}
     .orb-text{font-size:0.87rem;color:var(--text-dim);line-height:1.5}
     .orb-text strong{color:var(--text);font-weight:500}
-
-    .pills{display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:0.85rem}
+    .pills{display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:1rem}
     .pill{font-size:0.65rem;padding:0.15rem 0.5rem;border-radius:999px;border:1px solid var(--border);color:var(--text-muted);font-weight:500}
 
-    .widget-box{border-radius:0.75rem;border:1px dashed rgba(148,163,184,0.22);padding:0.85rem;background:rgba(3,8,13,0.6)}
-    .widget-box p{font-size:0.75rem;color:var(--text-muted);line-height:1.5;margin:0}
-    .widget-box code{font-size:0.7rem;background:rgba(45,212,168,0.08);padding:0.12rem 0.38rem;border-radius:4px;border:1px solid rgba(45,212,168,0.15);color:var(--accent)}
+    /* ── Retell inline call button ── */
+    .call-block{border-radius:0.75rem;border:1px solid rgba(45,212,168,0.2);background:rgba(3,8,13,0.7);padding:1rem 1.1rem;display:flex;flex-direction:column;gap:0.75rem}
+    .call-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted);font-weight:500}
+    .call-btn{position:relative;display:flex;align-items:center;justify-content:center;gap:0.6rem;width:100%;padding:0.75rem 1rem;border-radius:999px;border:none;cursor:pointer;font-family:var(--fb);font-size:0.9rem;font-weight:700;color:#020617;background:linear-gradient(135deg,#22c55e 0%,#2dd4a8 60%,#38bdf8 100%);box-shadow:0 6px 28px rgba(45,212,168,0.35);transition:all 0.22s var(--ease);overflow:hidden}
+    .call-btn:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(45,212,168,0.5)}
+    .call-btn:active{transform:scale(0.97)}
+    .call-btn.calling{background:linear-gradient(135deg,#ef4444,#f97316);box-shadow:0 6px 28px rgba(239,68,68,0.4);animation:pulse-glow 1.5s ease-in-out infinite}
+    .call-btn svg{flex-shrink:0}
+    .call-btn-ripple{position:absolute;inset:0;border-radius:inherit;background:rgba(255,255,255,0.25);transform:scale(0);transition:transform 0.5s, opacity 0.5s;opacity:0}
+    .call-btn:active .call-btn-ripple{animation:ripple 0.5s ease-out}
+    .call-status{font-size:0.75rem;color:var(--text-muted);display:flex;align-items:center;gap:0.4rem;min-height:1.1rem}
+    .call-status-dot{width:6px;height:6px;border-radius:50%;background:var(--text-muted);flex-shrink:0}
+    .call-status-dot.on{background:#22c55e;animation:pulse-glow 1.5s infinite}
+    .call-status-dot.err{background:#ef4444}
 
-    /* STATS */
     .stats{padding:2rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
     .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;text-align:center}
     .stat-n{font-family:var(--fd);font-size:2.6rem;font-weight:800;line-height:1;margin-bottom:0.25rem;letter-spacing:0.03em}
     .stat-n .a{color:var(--accent)}
     .stat-l{font-size:0.8rem;color:var(--text-muted);font-weight:500}
-
-    /* SECTIONS */
     section{padding:3.5rem 0}
     .sec-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--accent);margin-bottom:0.4rem;font-weight:600}
     .sec-title{font-family:var(--fd);font-size:clamp(1.7rem,2.8vw,2.4rem);font-weight:800;text-transform:uppercase;letter-spacing:0.04em;line-height:1.1;margin-bottom:0.5rem}
     .sec-desc{font-size:0.93rem;color:var(--text-dim);line-height:1.7;max-width:30rem}
     .sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;margin-bottom:2rem}
     hr.div{height:1px;background:var(--border);border:none}
-
-    /* VALUE CARDS */
     .val-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
     .val-card{border-radius:var(--r);border:1px solid var(--border);background:var(--bg-card);padding:1.35rem;transition:all 0.3s var(--ease);position:relative;overflow:hidden}
     .val-card::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 0% 0%,var(--accent-soft),transparent 60%);opacity:0;transition:opacity 0.35s}
@@ -132,15 +151,11 @@
     .tags{display:flex;flex-wrap:wrap;gap:0.32rem}
     .tag{font-size:0.64rem;letter-spacing:0.07em;text-transform:uppercase;padding:0.16rem 0.52rem;border-radius:999px;border:1px solid var(--border);color:var(--text-muted);font-weight:500}
     .tag-a{border-color:rgba(45,212,168,0.35);color:var(--accent)}
-
-    /* WHO WE SERVE */
     .serve-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
     .serve-card{border-radius:var(--r);border:1px solid var(--border);background:var(--bg-card);padding:1.2rem 1.35rem;display:flex;gap:0.9rem;align-items:flex-start}
     .serve-icon{font-size:1.4rem;flex-shrink:0;margin-top:0.1rem}
     .serve-card h4{font-family:var(--fd);font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.28rem}
     .serve-card p{font-size:0.83rem;color:var(--text-dim);line-height:1.55;margin:0}
-
-    /* LOCAL */
     .local-row{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
     .local-card{border-radius:var(--r);border:1px solid var(--border);background:var(--bg-card);padding:1.5rem}
     .local-card.hi{border-color:rgba(45,212,168,0.22)}
@@ -149,30 +164,22 @@
     .local-card strong{color:var(--text)}
     .giveback{margin-top:0.7rem;padding:0.7rem 0.85rem;border-radius:0.65rem;border:1px solid rgba(45,212,168,0.18);background:rgba(45,212,168,0.05);font-size:0.82rem;color:var(--text-dim);line-height:1.5}
     .giveback strong{color:var(--accent)}
-
-    /* CTA */
     .cta-sec{padding:3.5rem 0 5rem}
     .cta-box{border-radius:var(--rl);border:1px solid rgba(45,212,168,0.22);background:radial-gradient(ellipse at 20% 50%,rgba(45,212,168,0.07),transparent 60%),var(--bg-card);padding:2.25rem;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center}
     .cta-box h2{font-family:var(--fd);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:800;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.45rem}
-    .cta-box > div > p{font-size:0.92rem;color:var(--text-dim);line-height:1.65;max-width:28rem;margin-bottom:1rem}
+    .cta-box>div>p{font-size:0.92rem;color:var(--text-dim);line-height:1.65;max-width:28rem;margin-bottom:1rem}
     .cta-aside{text-align:right;font-size:0.82rem;color:var(--text-muted);line-height:1.6;min-width:175px}
     .cta-aside strong{color:var(--text-dim)}
-
-    /* FOOTER */
     footer{border-top:1px solid var(--border);padding:1.25rem 0 1.75rem;font-size:0.76rem;color:var(--text-muted)}
     .foot-row{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
     .foot-links{display:flex;gap:1.25rem}
     .foot-links a{font-weight:500;transition:color 0.2s}
     .foot-links a:hover{color:var(--text)}
-
-    /* MOBILE MENU */
     .mob-menu{display:none;position:fixed;inset:0;z-index:100;background:rgba(3,8,13,0.96);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;gap:1.5rem}
     .mob-menu.open{display:flex}
     .mob-menu a{font-family:var(--fd);font-size:1.5rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-dim);transition:color 0.2s}
     .mob-menu a:hover{color:var(--text)}
     .mob-close{position:absolute;top:1rem;right:1.5rem;background:none;border:none;color:var(--text);cursor:pointer;font-size:1.6rem}
-
-    /* RESPONSIVE */
     @media(max-width:1024px){.hero-grid{grid-template-columns:1fr}.hero-right{max-width:560px}.stats-row{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:900px){.nav-links{display:none}.menu-toggle{display:flex}.val-grid{grid-template-columns:1fr 1fr}.serve-grid{grid-template-columns:1fr}.local-row{grid-template-columns:1fr}.cta-box{grid-template-columns:1fr}.cta-aside{text-align:left}.sec-head{flex-direction:column;align-items:flex-start}}
     @media(max-width:640px){.val-grid{grid-template-columns:1fr}.who-grid{grid-template-columns:1fr}.stats-row{grid-template-columns:1fr 1fr;gap:1rem}.hero-ctas{flex-direction:column}.cta-box{padding:1.4rem}}
@@ -181,15 +188,11 @@
 <body>
 <div class="wrap">
 
-  <!-- HEADER -->
   <header>
     <div class="container nav">
       <a href="#top" class="nav-brand">
         <div class="nav-logo"><img src="wolfcreekvoice_logo.png" alt="Wolf Creek Voice" /></div>
-        <div>
-          <div class="nav-name">Wolf Creek Voice</div>
-          <div class="nav-sub">Intelligent Solutions</div>
-        </div>
+        <div><div class="nav-name">Wolf Creek Voice</div><div class="nav-sub">Intelligent Solutions</div></div>
       </a>
       <nav class="nav-links">
         <a href="#value">Why It Works</a>
@@ -197,7 +200,7 @@
         <a href="#local">Our Community</a>
       </nav>
       <div class="nav-right">
-        <a href="#contact" class="btn btn-primary" style="padding:0.48rem 1rem;font-size:0.82rem;">Book a Call <span class="ba">↗</span></a>
+        <a href="#contact" class="btn btn-primary" style="padding:0.48rem 1rem;font-size:0.82rem;">Book a Call <span class="ba">&#x2197;</span></a>
         <button class="menu-toggle" onclick="document.querySelector('.mob-menu').classList.add('open')" aria-label="Open menu">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h14M3 11h14M3 16h14"/></svg>
         </button>
@@ -214,91 +217,62 @@
   </div>
 
   <main>
-
-    <!-- HERO: tight copy left, live demo right -->
     <section class="hero" id="top">
       <div class="container">
         <div class="hero-grid">
 
           <div class="hero-left">
-            <div class="kicker">
-              <span class="kicker-dot"></span>
-              Pagosa Springs &amp; Southwest Colorado
-            </div>
-
-            <h1 class="hero-title">
-              Stop losing<br/>calls.<br/>
-              <span class="gt">Start winning</span><br/>customers.
-            </h1>
-
-            <p class="hero-desc">
-              Every missed call is a missed customer. Wolf Creek Voice puts an <strong>intelligent voice agent</strong> on your phone line — answering 24/7, booking appointments, and capturing leads while you focus on running your business.
-            </p>
-
+            <div class="kicker"><span class="kicker-dot"></span>Pagosa Springs &amp; Southwest Colorado</div>
+            <h1 class="hero-title">Stop losing<br/>calls.<br/><span class="gt">Start winning</span><br/>customers.</h1>
+            <p class="hero-desc">Every missed call is a missed customer. Wolf Creek Voice puts an <strong>intelligent voice agent</strong> on your phone line &mdash; answering 24/7, booking appointments, and capturing leads while you focus on running your business.</p>
             <div class="who-grid">
-              <div class="who-card">
-                <div class="who-label">Service &amp; Trades</div>
-                <p>Books jobs, confirms appointments, handles after-hours calls.</p>
-              </div>
-              <div class="who-card">
-                <div class="who-label">Medical &amp; Wellness</div>
-                <p>Captures patient info, routes urgent calls, fills schedule gaps.</p>
-              </div>
-              <div class="who-card">
-                <div class="who-label">Hospitality &amp; Tourism</div>
-                <p>Answers questions, takes reservations, supports late-night callers.</p>
-              </div>
-              <div class="who-card">
-                <div class="who-label">Retail &amp; Main Street</div>
-                <p>Hours, directions, inventory questions — handled automatically.</p>
-              </div>
+              <div class="who-card"><div class="who-label">Service &amp; Trades</div><p>Books jobs, confirms appointments, handles after-hours calls.</p></div>
+              <div class="who-card"><div class="who-label">Medical &amp; Wellness</div><p>Captures patient info, routes urgent calls, fills schedule gaps.</p></div>
+              <div class="who-card"><div class="who-label">Hospitality &amp; Tourism</div><p>Answers questions, takes reservations, supports late-night callers.</p></div>
+              <div class="who-card"><div class="who-label">Retail &amp; Main Street</div><p>Hours, directions, inventory questions &mdash; handled automatically.</p></div>
             </div>
-
             <div class="hero-ctas">
-              <a href="#contact" class="btn btn-primary">Book a Free Consult <span class="ba">↗</span></a>
+              <a href="#contact" class="btn btn-primary">Book a Free Consult <span class="ba">&#x2197;</span></a>
               <a href="#value" class="btn btn-outline">See How It Works</a>
             </div>
-
-            <div class="proof">
-              <span class="proof-dot"></span>
-              <span>24/7 always-on &bull; Sub-second response &bull; 10% of profits back to Southwest Colorado</span>
-            </div>
+            <div class="proof"><span class="proof-dot"></span><span>24/7 always-on &bull; Sub-second response &bull; 10% of profits back to Southwest Colorado</span></div>
           </div>
 
-          <!-- LIVE DEMO — visible immediately on load -->
           <div class="hero-right" id="demo">
             <div class="demo-panel">
               <div class="panel-top">
-                <div class="panel-title">Try It Live — Right Now</div>
+                <div class="panel-title">Try It Live &mdash; Right Now</div>
                 <div class="panel-badge"><span class="live-dot"></span> Live</div>
               </div>
 
               <div class="demo-orb-row">
-                <div class="demo-orb" title="Your voice agent"></div>
+                <div class="demo-orb" id="orbBtn" title="Start a voice call"></div>
                 <div class="orb-text">
-                  <strong>"Hi, thanks for calling. How can I help you today?"</strong><br/>
-                  Speak with a Wolf Creek Voice agent in real time.
+                  <strong>"Hi! I'm your Wolf Creek Voice assistant &mdash; ask about scheduling, services, or how a voice agent can help your business."</strong><br/>
+                  Start a live voice call directly in your browser.
                 </div>
               </div>
 
               <div class="pills">
                 <span class="pill">24/7 Always-On</span>
-                <span class="pill">Natural Conversation</span>
+                <span class="pill">Live Voice Call</span>
                 <span class="pill">Books Appointments</span>
                 <span class="pill">Captures Leads</span>
                 <span class="pill">Real-Time Routing</span>
               </div>
 
-              <!-- ── REPLACE with your GHL widget ── -->
-              <div class="widget-box">
-                <!-- GHL Chat & Voice Widget -->
-                <script 
-                  src="https://beta.leadconnectorhq.com/loader.js"  
-                  data-resources-url="https://beta.leadconnectorhq.com/chat-widget/loader.js" 
-                  data-widget-id="69cb422f943b3a9fdfeea875"> 
-                </script>
-                
-                <p>Use the icon in the bottom corner to speak or chat with our AI agent directly in your browser.</p>
+              <!-- Retell inline call button -->
+              <div class="call-block">
+                <div class="call-label">Live voice demo &mdash; no phone needed</div>
+                <button class="call-btn" id="callBtn" onclick="handleCall()">
+                  <span class="call-btn-ripple"></span>
+                  <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.14 12 19.79 19.79 0 0 1 1.07 3.4 2 2 0 0 1 3 1.07h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 5.93 5.93l1.21-1.21a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/></svg>
+                  <span id="callBtnText">Start Voice Call</span>
+                </button>
+                <div class="call-status" id="callStatus">
+                  <span class="call-status-dot" id="callDot"></span>
+                  <span id="callStatusText">Ready &mdash; click to connect with a live AI agent</span>
+                </div>
               </div>
 
             </div>
@@ -308,7 +282,6 @@
       </div>
     </section>
 
-    <!-- STATS -->
     <div class="stats">
       <div class="container">
         <div class="stats-row">
@@ -320,167 +293,84 @@
       </div>
     </div>
 
-    <!-- WHY IT WORKS -->
     <section id="value">
       <div class="container">
         <div class="sec-head">
-          <div>
-            <div class="sec-label">// Why It Works</div>
-            <div class="sec-title">Your business never<br/>goes to voicemail again</div>
-          </div>
-          <p class="sec-desc">A voice agent that knows your business, speaks naturally, and turns callers into booked customers — around the clock.</p>
+          <div><div class="sec-label">// Why It Works</div><div class="sec-title">Your business never<br/>goes to voicemail again</div></div>
+          <p class="sec-desc">A voice agent that knows your business, speaks naturally, and turns callers into booked customers &mdash; around the clock.</p>
         </div>
-
         <div class="val-grid">
-          <div class="val-card hi anim">
-            <div class="val-icon">📞</div>
-            <h3>Never Miss a Call</h3>
-            <p>Picks up instantly — nights, weekends, holidays. Every caller gets a real conversation, not voicemail. More answered calls means more revenue.</p>
-            <div class="tags"><span class="tag tag-a">Always-On</span><span class="tag tag-a">Zero Missed Calls</span></div>
-          </div>
-          <div class="val-card anim">
-            <div class="val-icon">📅</div>
-            <h3>Books While You Work</h3>
-            <p>Schedules appointments directly into your calendar, sends confirmations, and handles rescheduling — without your team lifting a finger.</p>
-            <div class="tags"><span class="tag">Calendar Integration</span><span class="tag">Auto-Booking</span></div>
-          </div>
-          <div class="val-card anim">
-            <div class="val-icon">🎯</div>
-            <h3>Captures Every Lead</h3>
-            <p>Gathers contact info, intent, and urgency before routing. No more sticky notes. Every caller's details land in your CRM automatically.</p>
-            <div class="tags"><span class="tag">Lead Capture</span><span class="tag">CRM Sync</span></div>
-          </div>
-          <div class="val-card anim">
-            <div class="val-icon">🗣️</div>
-            <h3>Sounds Like Your Team</h3>
-            <p>Trained on your business, your services, your voice. Callers get accurate answers in a natural conversation — not a phone tree.</p>
-            <div class="tags"><span class="tag">Neural Voice</span><span class="tag">Natural Language</span></div>
-          </div>
-          <div class="val-card anim">
-            <div class="val-icon">🔗</div>
-            <h3>Plugs Into Your Tools</h3>
-            <p>Works with the software you already use — Google Calendar, Square, Mindbody, and more. Setup in days, not months.</p>
-            <div class="tags"><span class="tag">Fast Setup</span><span class="tag">Integrations</span></div>
-          </div>
-          <div class="val-card anim">
-            <div class="val-icon">📊</div>
-            <h3>Full Visibility</h3>
-            <p>Every call, transcript, and conversion tracked in a live dashboard. Know what callers need and where leads are coming from.</p>
-            <div class="tags"><span class="tag">Analytics</span><span class="tag">Call Transcripts</span></div>
-          </div>
+          <div class="val-card hi anim"><div class="val-icon">&#x1F4DE;</div><h3>Never Miss a Call</h3><p>Picks up instantly &mdash; nights, weekends, holidays. Every caller gets a real conversation, not voicemail.</p><div class="tags"><span class="tag tag-a">Always-On</span><span class="tag tag-a">Zero Missed Calls</span></div></div>
+          <div class="val-card anim"><div class="val-icon">&#x1F4C5;</div><h3>Books While You Work</h3><p>Schedules appointments directly into your calendar, sends confirmations, and handles rescheduling automatically.</p><div class="tags"><span class="tag">Calendar Integration</span><span class="tag">Auto-Booking</span></div></div>
+          <div class="val-card anim"><div class="val-icon">&#x1F3AF;</div><h3>Captures Every Lead</h3><p>Gathers contact info, intent, and urgency before routing. Every caller's details land in your CRM automatically.</p><div class="tags"><span class="tag">Lead Capture</span><span class="tag">CRM Sync</span></div></div>
+          <div class="val-card anim"><div class="val-icon">&#x1F5E3;</div><h3>Sounds Like Your Team</h3><p>Trained on your business, your services, your voice. Callers get accurate answers in a natural conversation.</p><div class="tags"><span class="tag">Neural Voice</span><span class="tag">Natural Language</span></div></div>
+          <div class="val-card anim"><div class="val-icon">&#x1F517;</div><h3>Plugs Into Your Tools</h3><p>Works with Google Calendar, Square, Mindbody, and more. Setup in days, not months.</p><div class="tags"><span class="tag">Fast Setup</span><span class="tag">Integrations</span></div></div>
+          <div class="val-card anim"><div class="val-icon">&#x1F4CA;</div><h3>Full Visibility</h3><p>Every call, transcript, and conversion tracked in a live dashboard. Know what callers need and where leads come from.</p><div class="tags"><span class="tag">Analytics</span><span class="tag">Call Transcripts</span></div></div>
         </div>
       </div>
     </section>
 
     <hr class="div" />
 
-    <!-- WHO WE SERVE -->
     <section id="serve">
       <div class="container">
         <div class="sec-head">
-          <div>
-            <div class="sec-label">// Who We Help</div>
-            <div class="sec-title">Built for Southwest<br/>Colorado businesses</div>
-          </div>
+          <div><div class="sec-label">// Who We Help</div><div class="sec-title">Built for Southwest<br/>Colorado businesses</div></div>
           <p class="sec-desc">If your phone rings and you can't always answer it, Wolf Creek Voice is built for you.</p>
         </div>
-
         <div class="serve-grid">
-          <div class="serve-card anim">
-            <div class="serve-icon">🔧</div>
-            <div>
-              <h4>Service &amp; Trades</h4>
-              <p>Plumbers, HVAC, electricians, landscapers — your agent books jobs, confirms appointments, and handles overflow when your crew is on-site and can't pick up.</p>
-            </div>
-          </div>
-          <div class="serve-card anim">
-            <div class="serve-icon">🏥</div>
-            <div>
-              <h4>Medical &amp; Wellness</h4>
-              <p>Clinics, chiropractors, spas, and therapists — capture patient intake, manage scheduling overflow, and route urgent calls to the right person immediately.</p>
-            </div>
-          </div>
-          <div class="serve-card anim">
-            <div class="serve-icon">🏔️</div>
-            <div>
-              <h4>Hospitality &amp; Tourism</h4>
-              <p>Lodges, outfitters, tour operators, restaurants — answer questions about availability and rates, and take reservations after hours.</p>
-            </div>
-          </div>
-          <div class="serve-card anim">
-            <div class="serve-icon">🛍️</div>
-            <div>
-              <h4>Retail &amp; Main Street</h4>
-              <p>Boutiques, galleries, and local shops — handle calls about hours, inventory, and directions so your staff can focus on customers in front of them.</p>
-            </div>
-          </div>
+          <div class="serve-card anim"><div class="serve-icon">&#x1F527;</div><div><h4>Service &amp; Trades</h4><p>Plumbers, HVAC, electricians, landscapers &mdash; books jobs, confirms appointments, handles overflow when your crew is on-site.</p></div></div>
+          <div class="serve-card anim"><div class="serve-icon">&#x1F3E5;</div><div><h4>Medical &amp; Wellness</h4><p>Clinics, chiropractors, spas &mdash; capture patient intake, manage scheduling overflow, and route urgent calls immediately.</p></div></div>
+          <div class="serve-card anim"><div class="serve-icon">&#x1F3D4;&#xFE0F;</div><div><h4>Hospitality &amp; Tourism</h4><p>Lodges, outfitters, restaurants &mdash; answer questions about availability and rates, take reservations after hours.</p></div></div>
+          <div class="serve-card anim"><div class="serve-icon">&#x1F6CD;&#xFE0F;</div><div><h4>Retail &amp; Main Street</h4><p>Boutiques, galleries, local shops &mdash; handle calls about hours, inventory, and directions automatically.</p></div></div>
         </div>
       </div>
     </section>
 
     <hr class="div" />
 
-    <!-- LOCAL FIRST -->
     <section id="local">
       <div class="container">
         <div class="sec-head">
-          <div>
-            <div class="sec-label">// Local First</div>
-            <div class="sec-title">Rooted in Pagosa Springs</div>
-          </div>
+          <div><div class="sec-label">// Local First</div><div class="sec-title">Rooted in Pagosa Springs</div></div>
           <p class="sec-desc">We're not a call center. We're a local studio that knows Southwest Colorado and the businesses that make it run.</p>
         </div>
-
         <div class="local-row">
           <div class="local-card hi anim">
             <h3>We're Your Neighbor</h3>
             <p>Based in Pagosa Springs, we serve Durango, Bayfield, Ignacio, and surrounding communities. Every agent is tuned to your season, your customers, and your way of doing business.</p>
-            <div class="giveback">Wolf Creek Voice pledges <strong>10% of profits</strong> back to the community — supporting education, environment, and small business initiatives across Southwest Colorado.</div>
+            <div class="giveback">Wolf Creek Voice pledges <strong>10% of profits</strong> back to the community &mdash; supporting education, environment, and small business initiatives across Southwest Colorado.</div>
           </div>
           <div class="local-card anim">
             <h3>Grows With You</h3>
-            <p>Start with your phone line. As your needs grow, we add <strong>broader automation</strong> — web chat, workflow orchestration, and custom voice tools — so your technology grows alongside your business.</p>
-            <div class="tags" style="margin-top:0.75rem;">
-              <span class="tag">Voice Agents</span>
-              <span class="tag">Workflow Automation</span>
-              <span class="tag">Long-Term Partner</span>
-            </div>
+            <p>Start with your phone line. As your needs grow, we add <strong>broader automation</strong> &mdash; web chat, workflow orchestration, and custom voice tools.</p>
+            <div class="tags" style="margin-top:0.75rem;"><span class="tag">Voice Agents</span><span class="tag">Workflow Automation</span><span class="tag">Long-Term Partner</span></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- CTA -->
     <section class="cta-sec" id="contact">
       <div class="container">
         <div class="cta-box anim">
           <div>
             <h2>Ready to stop missing calls?</h2>
-            <p>Book a free 30-minute call. We'll show you exactly where a voice agent can save your team time and recover lost revenue — usually live in days.</p>
+            <p>Book a free 30-minute call. We'll show you exactly where a voice agent can save your team time and recover lost revenue &mdash; usually live in days.</p>
             <div style="display:flex;flex-wrap:wrap;gap:0.65rem">
-              <a href="mailto:hello@wolfcreekvoice.com" class="btn btn-primary">Email Wolf Creek Voice <span class="ba">↗</span></a>
+              <a href="mailto:hello@wolfcreekvoice.com" class="btn btn-primary">Email Wolf Creek Voice <span class="ba">&#x2197;</span></a>
               <a href="https://cal.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Schedule a Zoom Consult</a>
             </div>
           </div>
-          <div class="cta-aside">
-            <div><strong>Free consult.</strong> No commitment.</div>
-            <div style="margin-top:0.4rem">24/7 always-on &bull; Live in days &bull; Local team</div>
-          </div>
+          <div class="cta-aside"><div><strong>Free consult.</strong> No commitment.</div><div style="margin-top:0.4rem">24/7 always-on &bull; Live in days &bull; Local team</div></div>
         </div>
       </div>
     </section>
-
   </main>
 
   <footer>
     <div class="container foot-row">
       <div>&copy; <span id="yr"></span> Wolf Creek Voice &bull; Intelligent Solutions &bull; Pagosa Springs, CO</div>
-      <div class="foot-links">
-        <a href="#top">Top</a>
-        <a href="#value">Why It Works</a>
-        <a href="#serve">Who We Help</a>
-        <a href="mailto:hello@wolfcreekvoice.com">Contact</a>
-      </div>
+      <div class="foot-links"><a href="#top">Top</a><a href="#value">Why It Works</a><a href="#serve">Who We Help</a><a href="mailto:hello@wolfcreekvoice.com">Contact</a></div>
     </div>
   </footer>
 </div>
@@ -488,31 +378,93 @@
 <script>
   document.getElementById('yr').textContent = new Date().getFullYear();
 
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        const siblings = e.target.parentElement.querySelectorAll('.anim');
-        const i = Array.from(siblings).indexOf(e.target);
-        e.target.style.transitionDelay = i * 0.08 + 's';
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var s=e.target.parentElement.querySelectorAll('.anim');
+        var i=Array.from(s).indexOf(e.target);
+        e.target.style.transitionDelay=i*0.08+'s';
         e.target.classList.add('vis');
         obs.unobserve(e.target);
       }
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+  },{threshold:0.12,rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.anim').forEach(function(el){obs.observe(el);});
 
-  document.querySelectorAll('.anim').forEach(el => obs.observe(el));
-
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const t = document.querySelector(a.getAttribute('href'));
-      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var t=document.querySelector(a.getAttribute('href'));
+      if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
     });
   });
 
-  const hdr = document.querySelector('header');
-  window.addEventListener('scroll', () => {
-    hdr.style.background = window.scrollY > 20 ? 'rgba(3,8,13,0.94)' : 'rgba(3,8,13,0.82)';
-  }, { passive: true });
-</script> 
+  var hdr=document.querySelector('header');
+  window.addEventListener('scroll',function(){
+    hdr.style.background=window.scrollY>20?'rgba(3,8,13,0.94)':'rgba(3,8,13,0.82)';
+  },{passive:true});
+
+  /* Clicking the orb also triggers the call button */
+  document.getElementById('orbBtn').addEventListener('click', handleCall);
+
+  /* ── Retell call handler ──────────────────────────────────────────
+     Triggers Retell's widget open() if available, otherwise falls
+     back to finding and clicking Retell's own button in the DOM.
+     Once you replace YOUR_RETELL_PUBLIC_KEY the widget loads and
+     this wires up automatically.
+  ─────────────────────────────────────────────────────────────────── */
+  var calling = false;
+
+  function setStatus(text, state) {
+    var dot  = document.getElementById('callDot');
+    var msg  = document.getElementById('callStatusText');
+    var btn  = document.getElementById('callBtn');
+    var label = document.getElementById('callBtnText');
+    dot.className  = 'call-status-dot' + (state === 'on' ? ' on' : state === 'err' ? ' err' : '');
+    msg.textContent = text;
+    if (state === 'on') {
+      btn.classList.add('calling');
+      label.textContent = 'End Call';
+    } else {
+      btn.classList.remove('calling');
+      label.textContent = 'Start Voice Call';
+    }
+  }
+
+  function handleCall() {
+    if (calling) {
+      /* End the call */
+      calling = false;
+      if (window.RetellWidget && typeof window.RetellWidget.close === 'function') {
+        window.RetellWidget.close();
+      }
+      setStatus('Call ended \u2014 click to call again', '');
+      return;
+    }
+
+    /* Try Retell widget API first */
+    if (window.RetellWidget && typeof window.RetellWidget.open === 'function') {
+      calling = true;
+      setStatus('Connecting\u2026', 'on');
+      window.RetellWidget.open();
+      window.RetellWidget.on && window.RetellWidget.on('call_ended', function(){
+        calling = false;
+        setStatus('Call ended \u2014 click to call again', '');
+      });
+      return;
+    }
+
+    /* Fallback: click Retell's hidden button directly */
+    var retellBtn = document.querySelector('[id*="retell"] button, [class*="retell"] button, #retell-widget-container button');
+    if (retellBtn) {
+      calling = true;
+      setStatus('Connecting\u2026', 'on');
+      retellBtn.click();
+      return;
+    }
+
+    /* Public key not yet set — helpful message */
+    setStatus('Add your Retell Public Key to activate', 'err');
+  }
+</script>
 </body>
 </html>
