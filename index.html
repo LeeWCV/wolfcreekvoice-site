@@ -10,22 +10,24 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
 
-  <!-- RETELL AI WIDGET
-       Your agent ID is set. One step left:
-       Replace YOUR_RETELL_PUBLIC_KEY with your key from:
-       Retell Dashboard > Keys > + Add Key > Public Key (add your domain) -->
+  <!-- RETELL AI CALLBACK WIDGET (voice)
+       Two values to fill in:
+       1. YOUR_RETELL_PUBLIC_KEY  → Retell Dashboard > Keys > + Add Key > Public Key
+       2. +19705089027 → e.g. +19705550000 (your number in Retell Dashboard > Phone Numbers) -->
   <script
     id="retell-widget"
     src="https://dashboard.retellai.com/retell-widget.js"
     type="module"
+    data-widget="callback"
     data-public-key="public_key_d5a65cea4699f1105d5df"
     data-agent-id="agent_2d9f715e5c855773568dd56a86"
+    data-phone-number="+19705089027"
     data-agent-version="0"
     data-title="Wolf Creek Voice"
     data-color="#2dd4a8"
     data-bot-name="Wolf Creek Voice"
     data-logo-url="https://wolfcreekvoice.com/wolfcreekvoice_logo.png"
-    data-popup-message="Hi! I am your Wolf Creek Voice assistant. Ask about scheduling, services, or how a voice agent can help your business."
+    data-popup-message="Want to hear a live AI voice demo? Enter your number and we will call you right back."
     data-show-ai-popup="true"
     data-show-ai-popup-time="5"
     data-auto-open="false">
@@ -222,7 +224,7 @@
               </div>
               <div class="call-note">
                 <span class="call-note-dot"></span>
-                <span>Click the <strong style="color:var(--accent)">Wolf Creek Voice</strong> button in the corner to start a live demo</span>
+                <span>Click the <strong style="color:var(--accent)">Wolf Creek Voice</strong> button &mdash; enter your number and we call you back instantly</span>
               </div>
             </div>
           </div>
@@ -298,7 +300,7 @@
             <h2>Ready to stop missing calls?</h2>
             <p>Book a free 30-minute call. We'll show you exactly where a voice agent can save your team time and recover lost revenue &mdash; usually live in days.</p>
             <div style="display:flex;flex-wrap:wrap;gap:0.65rem">
-              <a href="mailto:hello@wolfcreekvoice.com" class="btn btn-primary">Email Wolf Creek Voice <span class="ba">&#x2197;</span></a>
+              <a href="/cdn-cgi/l/email-protection#cea6aba2a2a18eb9a1a2a8adbcababa5b8a1a7adabe0ada1a3" class="btn btn-primary">Email Wolf Creek Voice <span class="ba">&#x2197;</span></a>
               <a href="https://cal.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Schedule a Zoom Consult</a>
             </div>
           </div>
@@ -310,11 +312,11 @@
   <footer>
     <div class="container foot-row">
       <div>&copy; <span id="yr"></span> Wolf Creek Voice &bull; Intelligent Solutions &bull; Pagosa Springs, CO</div>
-      <div class="foot-links"><a href="#top">Top</a><a href="#value">Why It Works</a><a href="#serve">Who We Help</a><a href="mailto:hello@wolfcreekvoice.com">Contact</a></div>
+      <div class="foot-links"><a href="#top">Top</a><a href="#value">Why It Works</a><a href="#serve">Who We Help</a><a href="/cdn-cgi/l/email-protection#5f373a3333301f283033393c2d3a3a342930363c3a713c3032">Contact</a></div>
     </div>
   </footer>
 </div>
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   document.getElementById('yr').textContent = new Date().getFullYear();
   var obs = new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){var s=x.target.parentElement.querySelectorAll('.anim');var i=Array.from(s).indexOf(x.target);x.target.style.transitionDelay=i*0.08+'s';x.target.classList.add('vis');obs.unobserve(x.target);}});},{threshold:0.12,rootMargin:'0px 0px -30px 0px'});
   document.querySelectorAll('.anim').forEach(function(el){obs.observe(el);});
