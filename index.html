@@ -289,11 +289,18 @@
                 <span class="pill">Real-Time Routing</span>
               </div>
 
-              <!-- ── REPLACE with your ElevenLabs widget ── -->
+              <!-- ── REPLACE with your GHL widget ── -->
               <div class="widget-box">
-                <!-- <script src="https://elevenlabs.io/voice-widget.js" data-agent-id="YOUR_AGENT_ID" async></script> -->
-                <p>Paste your ElevenLabs <code>&lt;script&gt;</code> or <code>&lt;iframe&gt;</code> here. Visitors speak directly with your agent in the browser — no phone required.</p>
+                <!-- GHL Chat & Voice Widget -->
+                <script 
+                  src="https://beta.leadconnectorhq.com/loader.js"  
+                  data-resources-url="https://beta.leadconnectorhq.com/chat-widget/loader.js" 
+                  data-widget-id="69cb422f943b3a9fdfeea875"> 
+                </script>
+                
+                <p>Use the icon in the bottom corner to speak or chat with our AI agent directly in your browser.</p>
               </div>
+
             </div>
           </div>
 
@@ -506,13 +513,6 @@
   window.addEventListener('scroll', () => {
     hdr.style.background = window.scrollY > 20 ? 'rgba(3,8,13,0.94)' : 'rgba(3,8,13,0.82)';
   }, { passive: true });
-</script>
-
-<script 
-  src="https://beta.leadconnectorhq.com/loader.js"  
-  data-resources-url="https://beta.leadconnectorhq.com/chat-widget/loader.js" 
- data-widget-id="69cb422f943b3a9fdfeea875"   > 
- </script>
-  
+</script> 
 </body>
 </html>
