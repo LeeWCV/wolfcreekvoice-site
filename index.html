@@ -901,10 +901,15 @@ async function initChat() {
       const data = await res.json();
       if (res.ok && (data.chat_id || data.id)) {
         chatSessionId = data.chat_id || data.id;
+        // Extract opening message from various response shapes
+        let openMsg = null;
         if (data.messages && data.messages.length > 0) {
-          const firstMsg = data.messages.find(m => m.role === 'agent' || m.role === 'assistant');
-          if (firstMsg) document.getElementById('chat-init-msg').textContent = firstMsg.content;
+          const fm = data.messages.find(m => m.role === 'agent' || m.role === 'assistant');
+          if (fm) openMsg = fm.content;
         }
+        if (!openMsg && data.agent_message) openMsg = data.agent_message;
+        if (!openMsg && data.content) openMsg = data.content;
+        if (openMsg) document.getElementById('chat-init-msg').textContent = openMsg;
         console.log('Chat initialized via', ep.url, 'id:', chatSessionId);
         return; // success
       }
@@ -932,53 +937,84 @@ async function sendChat() {
   const typingEl = appendChatBubble('Thinking…', 'typing');
 
   try {
-    let url, body;
+    // Retell chat send — try primary endpoint first, fallback if needed
+    const sendEndpoints = chatSessionId ? [
+      { url: RETELL_BASE + '/v2/send-message',      body: { chat_id: chatSessionId, content: msg } },
+      { url: RETELL_BASE + '/v2/send-chat-message', body: { chat_id: chatSessionId, content: msg } },
+      { url: RETELL_BASE + '/v2/chat/send',         body: { chat_id: chatSessionId, content: msg } },
+    ] : [
+      { url: RETELL_BASE + '/v2/create-chat', body: { agent_id: CHAT_AGENT_ID, first_message: msg } },
+    ];
 
-    if (chatSessionId) {
-      // Use existing chat session — try multiple send endpoint patterns
-      url = RETELL_BASE + '/v2/send-chat-message';
-      body = { chat_id: chatSessionId, content: msg, role: 'user' };
-    } else {
-      // No session — try to create one with the message included
-      url = RETELL_BASE + '/v2/create-chat';
-      body = { agent_id: CHAT_AGENT_ID, user_message: msg };
+    let replied = false;
+    for (const ep of sendEndpoints) {
+      try {
+        const res = await fetch(ep.url, {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + RETELL_API_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(ep.body)
+        });
+
+        const ct = res.headers.get('content-type') || '';
+        if (!ct.includes('application/json')) {
+          console.warn('Non-JSON from', ep.url, res.status);
+          continue; // try next endpoint
+        }
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          console.warn('Error from', ep.url, data);
+          continue;
+        }
+
+        // Capture session ID from any successful response
+        if (!chatSessionId && (data.chat_id || data.id)) {
+          chatSessionId = data.chat_id || data.id;
+        }
+
+        // Extract agent reply — handle all known Retell response shapes
+        let reply =
+          data.content                                                         // { content: "..." }
+          || data.agent_message                                                // { agent_message: "..." }
+          || data.response                                                     // { response: "..." }
+          || data.text                                                         // { text: "..." }
+          || (data.messages && (() => {
+               const last = [...data.messages].reverse()
+                 .find(m => m.role === 'agent' || m.role === 'assistant');
+               return last && last.content;
+             })())
+          || null;
+
+        typingEl.remove();
+        if (reply) {
+          appendChatBubble(reply, 'agent');
+          replied = true;
+          break; // success — stop trying other endpoints
+        } else {
+          // Log the actual shape so we can fix it quickly
+          console.info('Retell response shape (update parser):', JSON.stringify(data));
+          typingEl.remove();
+          appendChatBubble('(Received a response — checking format. Response: ' + JSON.stringify(data).slice(0, 120) + ')', 'agent');
+          replied = true;
+          break;
+        }
+      } catch(e) {
+        console.warn('Endpoint', ep.url, 'threw:', e.message);
+      }
     }
 
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + RETELL_API_KEY,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    });
-    const data = await res.json();
-    typingEl.remove();
-
-    if (res.ok) {
-      if (data.chat_id && !chatSessionId) chatSessionId = data.chat_id;
-
-      // Find agent reply
-      let reply = null;
-      if (data.agent_message) reply = data.agent_message;
-      else if (data.response) reply = data.response;
-      else if (data.messages) {
-        const last = [...data.messages].reverse().find(m => m.role === 'agent' || m.role === 'assistant');
-        if (last) reply = last.content;
-      }
-      if (reply) {
-        appendChatBubble(reply, 'agent');
-      } else {
-        setStatus('chat-status', '⚠️ Connected to Retell but response format unexpected. Try the 🎙️ Talk Now tab to speak directly.', 'info');
-      }
-    } else {
-      const errMsg = data.message || data.error || JSON.stringify(data);
-      setStatus('chat-status', 'Error: ' + errMsg, 'error');
+    if (!replied) {
+      typingEl.remove();
+      setStatus('chat-status', 'Chat API not responding. Agent may need to be published in Retell dashboard. Use 📞 Call Me or 🎙️ Talk Now in the meantime.', 'error');
     }
   } catch(e) {
     typingEl.remove();
     const friendly = e.message && e.message.includes('JSON')
-      ? 'Chat API endpoint not available from browser. Please use 📞 Call Me or 🎙️ Talk Now instead.'
+      ? 'Chat not responding — the agent may not be published yet. Please use 📞 Call Me or 🎙️ Talk Now instead.'
       : 'Network error: ' + e.message;
     setStatus('chat-status', friendly, 'error');
   }
